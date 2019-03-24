@@ -1,0 +1,17 @@
+@(title: String, post: Post)
+@src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
+
+@main("Chatty Blog - " + title) {
+
+    <article id="blog-post-@post.slug">
+        <div class="col-12">
+            <h1>@title</h1>
+
+            <img class="img-fluid" src="@src(post)" alt="@post.title" />
+
+            <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
+
+            @Html(post.content)
+        </div>
+    </article>
+}

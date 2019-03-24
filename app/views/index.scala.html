@@ -1,20 +1,45 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+@(title: String, page: Int, posts: Seq[Post], showPreviousLink: Boolean, showNextLink: Boolean)
 
-@*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
-@main("Welcome to Play") {
+@src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
+@link(post: Post) = {@Html(post.content + " &hellip; <a href=\"blog/" + post.slug + "\">Read More</a></p>")}
 
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @welcome(message, style = "scala")
+@main("Chatty Blog - " + title) {
+    <div class="col-12 pl-4">
+        <h1>@title</h1>
+    </div>
 
+    @for(post <- posts) {
+
+    <div class="col-12 col-md-6 p-4">
+        <div class="resized-image">
+            <a href="blog/@post.slug">
+                <img class="img-fluid" src="@src(post)" alt="@post.title" />
+            </a>
+        </div>
+        <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
+        <h5>@post.title</h5>
+        @link(post)
+    </div>
+
+    }
+
+    @if(showPreviousLink || showNextLink) {
+
+    <div class="col-12 pl-4" id="pagination">
+
+        @if(showPreviousLink) {
+            <a rel="prev" href="/?page=@{page - 1}">
+                <span>&lt;</span>Page @{page -1}
+            </a>
+        }
+
+        @if(showNextLink) {
+            <a rel="next" href="/?page=@{page + 1}">
+                Page @{page +1}<span>&gt;</span>
+            </a>
+        }
+
+    </div>
+
+    }
 }
