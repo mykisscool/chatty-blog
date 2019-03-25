@@ -9,13 +9,13 @@ class ErrorHandler extends HttpErrorHandler {
 
   def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
     Future.successful(
-      Status(statusCode)("A client error occurred: " + message)
+        InternalServerError(views.html.errors(message))
     )
   }
 
   def onServerError(request: RequestHeader, throwable: Throwable): Future[Result] = {
     Future.successful(
-        InternalServerError(views.html.errors(throwable))
+        InternalServerError(views.html.errors(throwable.getMessage))
     )
   }
 }

@@ -17,7 +17,7 @@ CREATE TABLE `post` (
   `slug` VARCHAR(60) NOT NULL,
   `image` VARCHAR(60) NOT NULL,
   `content` LONGTEXT NOT NULL,
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (`slug`),
   PRIMARY KEY (`id`));
 
@@ -27,7 +27,7 @@ CREATE TABLE `comment` (
   `user_id` INT UNSIGNED NOT NULL,
   `comment_id` INT UNSIGNED NULL,
   `comment` VARCHAR(256) NOT NULL,
-  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`));
 
 INSERT INTO `user` (`fullname`, `nickname`, `password`) VALUES

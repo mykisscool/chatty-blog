@@ -1,10 +1,10 @@
-@(throwable: Throwable)
+@(message: String)
 
 @main("500 - Server Error") {
 
     <div class="error-content col">
         <h1>Game Over!</h1>
-        <p><code>@throwable.getMessage</code></p>
+        <p><code>@message</code></p>
         <p><a href="/">Press Start to Continue ...</a></p>
     </div>
 
