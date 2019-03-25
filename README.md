@@ -1,6 +1,8 @@
 # Chatty Blog
 
-Coming soon ...
+[Demo the Chatty Blog right now!](https://chatty-blog.herokuapp.com/)
+
+More coming soon ...
 
 #### Logins
 
