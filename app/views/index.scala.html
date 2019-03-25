@@ -4,13 +4,13 @@
 @link(post: Post) = {@Html(post.content + " &hellip; <a href=\"blog/" + post.slug + "\">Read More</a></p>")}
 
 @main("Chatty Blog - " + title) {
-    <div class="col-12 pl-4">
+    <div class="col-12 pl-3">
         <h1>@title</h1>
     </div>
 
     @for(post <- posts) {
 
-    <div class="col-12 col-md-6 p-4">
+    <div class="col-12 col-md-6 p-3">
         <div class="resized-image">
             <a href="blog/@post.slug">
                 <img class="img-fluid" src="@src(post)" alt="@post.title" />
@@ -25,7 +25,7 @@
 
     @if(showPreviousLink || showNextLink) {
 
-    <div class="col-12 pl-4" id="pagination">
+    <div class="col-12 pl-3" id="pagination">
 
         @if(showPreviousLink) {
             <a rel="prev" href="/?page=@{page - 1}">
