@@ -7,7 +7,7 @@ CREATE TABLE `user` (
   `fullname` VARCHAR(60) NOT NULL,
   `nickname` VARCHAR(60) NOT NULL,
   `password` VARCHAR(60) NOT NULL,
-  UNIQUE (nickname),
+  UNIQUE (`nickname`),
   PRIMARY KEY (`id`));
 
 CREATE TABLE `post` (
@@ -18,7 +18,7 @@ CREATE TABLE `post` (
   `image` VARCHAR(60) NOT NULL,
   `content` LONGTEXT NOT NULL,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (slug),
+  UNIQUE (`slug`),
   PRIMARY KEY (`id`));
 
 CREATE TABLE `comment` (
@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id`));
 
 INSERT INTO `user` (`fullname`, `nickname`, `password`) VALUES
-('Samus Aran', 'ice_beam', '$2a$10$IkTr6yVfcwxIBcfrzfK/j./lCqfNN9bvm86WtiTxv.f2ca409amG.'),
+('Samus Aran', 'cold_as_ice_beam', '$2a$10$IkTr6yVfcwxIBcfrzfK/j./lCqfNN9bvm86WtiTxv.f2ca409amG.'),
 ('Mega Man', 'master_blaster', '$2a$10$1Ryx4ja8UdDwmFoX1TzSFeMJlmaYeZ3195F0GQkrq6u86AlhypV8q'),
 ('Simon Belont', 'whip_it_good', '$2a$10$RehsMHnjcRi1DWZv7OqJK.SFTadpaDvU3KUdER021NjnLin6OlcXu'),
 ('Kid Icarus', 'mr_pit', '$2a$10$jgm4eurIXXL2sRnIdGp5quwVZ2Tc.DcZW/bMNo1hyxAx1edTxEhN6'),

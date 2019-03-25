@@ -86,6 +86,7 @@ nav li + li {
 
 article .img-fluid {
     margin: 0.5rem 0 0.75rem 0;
+    width: 100%;
 }
 
 #pagination > a {
@@ -102,4 +103,8 @@ article .img-fluid {
 
 #pagination a[rel=next] span {
     padding-left: 5px;
+}
+
+.error-content h1 {
+    margin-bottom: 1rem;
 }

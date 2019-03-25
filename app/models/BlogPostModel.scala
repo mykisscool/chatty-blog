@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import javax.inject.{Inject, Singleton}
 import play.api.db._
 import play.api.Configuration
-import anorm.{SQL, RowParser, ~, SimpleSql, Row, SqlParser}
+import anorm.{Row, RowParser, SQL, SimpleSql, SqlParser, ~}
 import anorm.SqlParser._
 
 /** Case class for blog post
@@ -40,7 +40,7 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     *
     * @return Number of published blog posts
     */
-  val getAllPostCount: Int = {
+  def getAllPostCount: Int = {
     db.withConnection { implicit c =>
       SQL("SELECT COUNT(*) FROM post").as(SqlParser.scalar[Int].single)
     }
