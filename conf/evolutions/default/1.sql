@@ -55,7 +55,7 @@ INSERT INTO `comment` (`id`, `post_id`, `user_id`, `comment_id`, `comment`) VALU
 (4, 2, 8, NULL, 'Impressive!!!!!!!!'),
 (5, 3, 7, NULL, 'My favorite is Skull Man from Mega Man 4!'),
 (6, 3, 2, 5, 'I fought him. I won.'),
-(7, 4, 1, NULL, 'I''m more interested in Richter''s whip and abilities. Trevor was slow and needed friends to help him beat dracula.'),
+(7, 4, 1, NULL, 'I''m more interested in Richter''s whip and abilities. Trevor was slow and needed friends to help him beat Dracula.'),
 (8, 4, 4, 7, 'I''m doing a post on him next week.  Stay tuned!'),
 (9, 5, 7, NULL, 'Boooooooooring!!!!!'),
 (10, 5, 6, NULL, 'ZZZZZzzzzzzzzz'),

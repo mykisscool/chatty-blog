@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 import play.api.mvc.{AbstractController, ControllerComponents}
-import models.{BlogPostModel => Post}
+import models.{BlogPostModel => Post, BlogCommentModel => Comment}
 
 /** Blog post page controller
   *
@@ -10,13 +10,18 @@ import models.{BlogPostModel => Post}
   * @param blogPostModel Model class for blog post(s)
   */
 @Singleton
-class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post) extends AbstractController(cc) {
+class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post, blogPostCommentModel: Comment) extends AbstractController(cc) {
 
   def getPost(slug: String) = Action {
 
     val blogPost = blogPostModel.getPost(slug)
     val title = blogPost.title
 
-    Ok(views.html.post(title, blogPost))
+    // Get comments
+    val parentComments = blogPostCommentModel.getCommentsToPost(blogPost.id)
+
+    // @TODO Comments to comments
+
+    Ok(views.html.post(title, blogPost, parentComments))
   }
 }

@@ -32,7 +32,7 @@ nav {
     background-color: #e3f2fd;
 }
 
-article {
+section.article-body {
     max-width: 800px;
     margin: auto;
 }
@@ -51,37 +51,37 @@ nav li + li {
     }
 }
 
-.navbar-brand i {
+a.navbar-brand i {
     line-height: inherit;
     color: #64737e;
     vertical-align: middle;
     font-size: 100%;
 }
 
-#main {
+div#main {
     padding: 1rem 0;
 }
 
-.resized-image {
+div.resized-image {
     overflow: hidden;
     max-height: 320px;
     margin-bottom: 15px;
 }
 
-.resized-image img {
+div.resized-image img {
     min-width: 580px;
 }
 
-.byline {
+p.byline {
     font-size: 95%;
 }
 
-.byline span {
+p.byline span {
     color: #777;
 
 }
 
-.byline span > span {
+p.byline span > span {
     padding: 0 3px;
 }
 
@@ -90,22 +90,51 @@ article .img-fluid {
     width: 100%;
 }
 
-#pagination > a {
+div#pagination > a {
     display: inline-block;
 }
 
-#pagination > a + a {
+div#pagination > a + a {
     margin-left: 1rem;
 }
 
-#pagination a[rel=prev] span {
+div#pagination a[rel=prev] span {
     padding-right: 5px;
 }
 
-#pagination a[rel=next] span {
+div#pagination a[rel=next] span {
     padding-left: 5px;
 }
 
-.error-content h1 {
+div.error-content h1 {
     margin-bottom: 1rem;
+}
+
+div.comments {
+    margin: 2rem auto;
+}
+
+div.comments hr {
+    margin-bottom: 2rem;
+}
+
+div.comments div {
+    padding-left: 1rem;
+    border-left: 1px dashed #ff6347;
+}
+
+div.comment p {
+    font-size: 90%;
+}
+
+div.comment p span {
+    color: #bbb;
+}
+
+div.comment p span > span {
+    padding: 0 1px;
+}
+
+div.tooltip-inner {
+    font-size: .75rem;
 }

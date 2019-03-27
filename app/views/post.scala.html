@@ -1,17 +1,48 @@
-@(title: String, post: Post)
+@(title: String, post: Post, comments: List[Comment])
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
 
 @main("Chatty Blog - " + title) {
 
-    <article id="blog-post-@post.slug">
-        <div class="col-12">
-            <h1>@title</h1>
+    <section class="article-body">
 
-            <img class="img-fluid" src="@src(post)" alt="@post.title" />
+        <article id="blog-post-@post.slug">
+            <div class="col-12">
+                <h1>@title</h1>
 
-            <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
+                <img class="img-fluid" src="@src(post)" alt="@post.title" />
 
-            @Html(post.content)
+                <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
+
+                @Html(post.content)
+            </div>
+        </article>
+
+        @if(comments.nonEmpty) {
+
+        <div class="comments col-12">
+            <hr />
+
+            @for(comment <- comments) {
+                <div class="comment">
+                    <p>
+                        <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">@comment.nickname</a>
+                        <span>
+                            <span>&middot;</span>
+                            @comment.created_at
+                            <span>&middot;</span>
+                        </span>
+                        @comment.comment
+                    </p>
+
+                    @* @TODO Recursion- figure out how to display nested comments *@
+
+                </div>
+            }
+
         </div>
-    </article>
+
+        }
+
+    </section>
+
 }

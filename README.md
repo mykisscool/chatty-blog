@@ -1,6 +1,6 @@
 # Chatty Blog
 
-[Demo the Chatty Blog right now!](https://chatty-blog.herokuapp.com/)
+[Demo Chatty Blog right now!](https://chatty-blog.herokuapp.com/)
 
 More coming soon ...
 
@@ -15,4 +15,4 @@ More coming soon ...
 | Glass Joe      | one_99           | password789 |
 | Princess Zelda | so_sleepy        | password987 |
 | Donkey Kong    | banana_slamma    | password012 |
-| Mario          | its_a_me         | password210 |
+| Mario Mario    | its_a_me         | password210 |
