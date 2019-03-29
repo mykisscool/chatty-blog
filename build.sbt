@@ -16,7 +16,6 @@ libraryDependencies ++= Seq(
   ws , 
   specs2 % Test , 
   guice ,
-  
   evolutions ,
   "mysql" % "mysql-connector-java" % "5.1.29" ,
   "org.mindrot" % "jbcrypt" % "0.3m" ,

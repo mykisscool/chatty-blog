@@ -11,6 +11,7 @@ import anorm.SqlParser.{date, int, str}
 /** Case class for a blog post
   *
   * @param id Post ID
+  * @param comment_count Number of comments made on the post
   * @param fullname Author name
   * @param nickname Author nickname
   * @param title Post title
@@ -20,6 +21,7 @@ import anorm.SqlParser.{date, int, str}
   * @param created_at When the post was published
   */
 case class Post(id: Int,
+                comment_count: Int,
                 fullname: String,
                 nickname: String,
                 title: String,
@@ -70,6 +72,7 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     */
   private def parser(isPost: Boolean = false): RowParser[Post] = {
     int("id") ~
+    int("comment_count") ~
     str("fullname") ~
     str("nickname") ~
     str("title") ~
@@ -78,8 +81,8 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     str("content") ~
     date("created_at") map {
 
-    case id ~ fullname ~ nickname ~ title ~ slug ~ image ~ content ~ created_at =>
-      Post(id, fullname, nickname, title, slug, image, if (isPost) content else truncateContent(content), prettyDate(created_at))
+    case  id ~ comment_count ~ fullname ~ nickname ~ title ~ slug ~ image ~ content ~ created_at =>
+      Post(id, comment_count, fullname, nickname, title, slug, image, if (isPost) content else truncateContent(content), prettyDate(created_at))
     }
   }
 
@@ -97,6 +100,7 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
       val q = SQL(
         """
           |SELECT p.id,
+          |       (SELECT COUNT(*) FROM comment WHERE post_id = p.id) AS comment_count,
           |       fullname,
           |       nickname,
           |       title,
@@ -127,6 +131,7 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
       val q: SimpleSql[Row] = SQL(
         """
           |SELECT p.id,
+          |       0 as comment_count, # <-- Irrelevant
           |       fullname,
           |       nickname,
           |       title,

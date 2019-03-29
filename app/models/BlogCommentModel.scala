@@ -27,6 +27,7 @@ case class Comment(comment_id: Int,
 /** Methods contain SQL statements that retrieve blog posts comments
   *
   * @param dbapi Database interface
+  * @param configuration application.conf configuration
   */
 @Singleton
 class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
@@ -83,7 +84,7 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     }
   }
 
-  /** Returns a list of top-level comments made to a blog post
+  /** Returns comments made to a blog post
     *
     * @param id Blog post ID
     * @return A list of all comments made to a blog post
@@ -95,7 +96,7 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
       val q = SQL(
         """
           |SELECT c.id AS comment_id,
-          |       0 AS commented_on_comment_id,
+          |       IFNULL(comment_id, 0) AS commented_on_comment_id,
           |       fullname,
           |       nickname,
           |       comment,
@@ -103,37 +104,7 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
           |FROM comment c
           |INNER JOIN user u ON c.user_id = u.id
           |WHERE post_id = {id}
-          |AND comment_id IS NULL
-          |ORDER BY created_at, c.id
-        """.stripMargin
-      ).on("id" -> id)
-
-      q.as(parser.*)
-    }
-  }
-
-  /** Returns a list of comments made to a blog post comment
-    *
-    * @param id Blog post comment ID
-    * @return A list of all comments made to a blog post comment
-    */
-  def getCommentsToComment(id: Int): List[Comment] = {
-
-    db.withConnection { implicit c =>
-
-      val q = SQL(
-        """
-          |SELECT c.id AS comment_id,
-          |       comment_id AS commented_on_comment_id,
-          |       fullname,
-          |       nickname,
-          |       comment,
-          |       c.created_at
-          |FROM comment c
-          |INNER JOIN user u ON c.user_id = u.id
-          |AND comment_id = {id}
-          |ORDER BY created_at, c.id
-          |
+          |ORDER BY commented_on_comment_id, created_at
         """.stripMargin
       ).on("id" -> id)
 

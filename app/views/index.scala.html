@@ -16,7 +16,14 @@
                 <img class="img-fluid" src="@src(post)" alt="@post.title" />
             </a>
         </div>
-        <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
+        <p class="byline">By: @post.fullname
+            <span>
+                <span>&middot;</span>
+                @post.created_at
+                <span>&middot;</span>
+            </span>
+            <a href="blog/@post.slug#comments">@post.comment_count comments</a>
+        </p>
         <h5>@post.title</h5>
         @link(post)
     </div>

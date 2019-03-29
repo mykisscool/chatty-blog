@@ -7,8 +7,9 @@ import models.{BlogPostModel => Post}
 
 /** Home Controller (homepage cycling through blog posts)
   *
-  * @param cc
-  * @param blogPostModel
+  * @param cc Simply meant to bundle together components typically used in a controller
+  * @param blogPostModel Model class for blog posts
+  * @param configuration application.conf configuration
   */
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, blogPostModel: Post, configuration: Configuration) extends AbstractController(cc) {

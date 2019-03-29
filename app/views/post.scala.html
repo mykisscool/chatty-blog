@@ -1,5 +1,17 @@
 @(title: String, post: Post, comments: List[Comment])
+
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
+@display(comment: Comment) = {
+    <p>
+        <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">@comment.nickname</a>
+        <span>
+            <span>&middot;</span>
+            @comment.created_at
+            <span>&middot;</span>
+        </span>
+        @comment.comment
+    </p>
+}
 
 @main("Chatty Blog - " + title) {
 
@@ -19,24 +31,44 @@
 
         @if(comments.nonEmpty) {
 
-        <div class="comments col-12">
+        <div id="comments" class="col-12">
             <hr />
 
             @for(comment <- comments) {
-                <div class="comment">
-                    <p>
-                        <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">@comment.nickname</a>
-                        <span>
-                            <span>&middot;</span>
-                            @comment.created_at
-                            <span>&middot;</span>
-                        </span>
-                        @comment.comment
-                    </p>
+                @if(comment.commented_on_comment_id.equals(0)) {
 
-                    @* @TODO Recursion- figure out how to display nested comments *@
+                <div class="comment">
+
+                    @display(comment)
+
+                    @* Recursively check for comments stemming from this parent comment *@
+                    @{
+                        def showChildrenForParent(comment_id: Int): Html = {
+
+                            var html: String = ""
+                            var children = comments.filter(_.commented_on_comment_id.equals(comment_id))
+
+                            if (children.nonEmpty) {
+
+                                html += "<div class=\"comment\">"
+
+                                for(child <- children) {
+                                    html += display(child)
+                                    html += showChildrenForParent(child.comment_id)
+                                }
+
+                                html += "</div>"
+                            }
+
+                            Html(html)
+                        }
+
+                        showChildrenForParent(comment.comment_id)
+                    }
 
                 </div>
+
+                }
             }
 
         </div>
