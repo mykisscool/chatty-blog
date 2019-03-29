@@ -22,7 +22,7 @@
                 @post.created_at
                 <span>&middot;</span>
             </span>
-            <a href="blog/@post.slug#comments">@post.comment_count comments</a>
+            <a href="blog/@post.slug#comments">@post.comment_count comment@{if(post.comment_count > 1) "s" else ""}</a>
         </p>
         <h5>@post.title</h5>
         @link(post)
