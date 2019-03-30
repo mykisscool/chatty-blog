@@ -33,7 +33,7 @@ CREATE TABLE `comment` (
 INSERT INTO `user` (`id`, `fullname`, `nickname`, `password`) VALUES
 (1, 'Samus Aran', 'cold_as_ice_beam', '$2a$10$IkTr6yVfcwxIBcfrzfK/j./lCqfNN9bvm86WtiTxv.f2ca409amG.'),
 (2, 'Mega Man', 'master_blaster', '$2a$10$1Ryx4ja8UdDwmFoX1TzSFeMJlmaYeZ3195F0GQkrq6u86AlhypV8q'),
-(3, 'Simon Belont', 'whip_it_good', '$2a$10$RehsMHnjcRi1DWZv7OqJK.SFTadpaDvU3KUdER021NjnLin6OlcXu'),
+(3, 'Simon Belmont', 'whip_it_good', '$2a$10$RehsMHnjcRi1DWZv7OqJK.SFTadpaDvU3KUdER021NjnLin6OlcXu'),
 (4, 'Kid Icarus', 'mr_pit', '$2a$10$jgm4eurIXXL2sRnIdGp5quwVZ2Tc.DcZW/bMNo1hyxAx1edTxEhN6'),
 (5, 'Glass Joe', 'one_99', '$2a$10$sCj/ZQ4gh9QMOdNmRflafuDUCP8yBy9kGbKw/ZMBcXYkCyVm5sytS'),
 (6, 'Princess Zelda', 'so_sleepy', '$2a$10$UpYppRnajiXqxuTXfnbriOC8F/AcKbH6G45VwIBlbqL/ykKNEdPNy'),
