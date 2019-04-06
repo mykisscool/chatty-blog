@@ -3,7 +3,10 @@
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
 @display(comment: Comment) = {
     <p>
-        <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">@comment.nickname</a>
+        <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">
+            <i></i>
+            @comment.nickname
+        </a>
         <span>
             <span>&middot;</span>
             @comment.created_at

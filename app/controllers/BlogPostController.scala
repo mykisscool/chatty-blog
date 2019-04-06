@@ -13,6 +13,11 @@ import models.{BlogPostModel => Post, BlogCommentModel => Comment}
 @Singleton
 class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post, blogPostCommentModel: Comment) extends AbstractController(cc) {
 
+  /** Display a blog post
+    *
+    * @param slug URI segment that uniquely identifies a blog post
+    * @return The blog post view
+    */
   def getPost(slug: String) = Action {
 
     val blogPost = blogPostModel.getPost(slug)

@@ -10,3 +10,7 @@ GET     /                           controllers.HomeController.index(page: Int ?
 
 # Blog posts
 GET     /blog/:slug                 controllers.BlogPostController.getPost(slug: String)
+
+# Authentication
+GET     /login                      controllers.LoginController.loginForm
+POST    /login/do                   controllers.LoginController.processLoginAttempt

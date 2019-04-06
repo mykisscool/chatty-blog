@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject._
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
 import play.api.Configuration
 import models.{BlogPostModel => Post}
 
@@ -14,6 +14,11 @@ import models.{BlogPostModel => Post}
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents, blogPostModel: Post, configuration: Configuration) extends AbstractController(cc) {
 
+  /** Shows blog posts in a loop
+    *
+    * @param page Page number (retrieved from query string)
+    * @return x number of posts per page
+    */
   def index(page: Int) = Action {
 
     val title = "Newest Posts"
