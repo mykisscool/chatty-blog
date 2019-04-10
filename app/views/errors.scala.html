@@ -1,11 +1,47 @@
 @(message: String)
 
-@main("500 - Server Error") {
+@* No main template used here to avoid my inability to implicitly provide any HTTP Request data *@
+@* @TODO Mitigate HTML duplication *@
 
-    <div class="error-content col">
-        <h1>Game Over!</h1>
-        <p><code>@message</code></p>
-        <p><a href="/">Press Start to Continue ...</a></p>
-    </div>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-}
+        <title>Chatty Blog - Error</title>
+        <link rel="stylesheet" media="screen" href="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" media="screen" href="//fonts.googleapis.com/icon?family=Material+Icons" />
+        <link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Lato:400" />
+
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    </head>
+    <body class="error">
+
+        <header>
+            <nav class="navbar navbar-light">
+                <a class="navbar-brand" href="/">
+                    <i class="material-icons">
+                        chat_bubble
+                    </i>
+                    Chatty Blog
+                </a>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="error-content col">
+                        <h1>Game Over!</h1>
+                        <p><code>@message</code></p>
+                        <p><a href="/">Press Start to Continue ...</a></p>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- // #main -->
+
+    </body>
+</html>

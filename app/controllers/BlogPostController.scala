@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject._
-import play.api.mvc.{AbstractController, ControllerComponents}
-import models.{BlogPostModel => Post, BlogCommentModel => Comment}
+import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
+import models.{BlogCommentModel => Comment, BlogPostModel => Post}
 
 /** Blog post page controller- displays a blog post
   *
@@ -18,7 +18,7 @@ class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post
     * @param slug URI segment that uniquely identifies a blog post
     * @return The blog post view
     */
-  def getPost(slug: String) = Action {
+  def getPost(slug: String) = Action { implicit request: Request[AnyContent] =>
 
     val blogPost = blogPostModel.getPost(slug)
     val title = blogPost.title

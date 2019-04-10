@@ -19,7 +19,7 @@ class HomeController @Inject()(cc: ControllerComponents, blogPostModel: Post, co
     * @param page Page number (retrieved from query string)
     * @return x number of posts per page
     */
-  def index(page: Int) = Action {
+  def index(page: Int) = Action { implicit request: Request[AnyContent] =>
 
     val title = "Newest Posts"
     val blogPosts = blogPostModel.getPosts(page)

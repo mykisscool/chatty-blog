@@ -3,7 +3,19 @@ package models
 import javax.inject.{Inject, Singleton}
 import org.mindrot.jbcrypt.BCrypt
 import play.api.db.DBApi
-import anorm.{SQL, SqlParser}
+import anorm.{SQL, RowParser, Macro, SimpleSql, Row}
+
+/** Case class for an authenticated user
+  *
+  * @param id User ID
+  * @param fullname User full name
+  * @param nickname User nickname
+  * @param password User password
+  */
+case class User(id: Int,
+                fullname: String,
+                nickname: String,
+                password: String)
 
 /** Methods contain SQL statements that help authenticate and identify a user
   *
@@ -20,30 +32,32 @@ class LoginModel @Inject()(dbapi: DBApi) {
     * @param password Password POST variable
     * @return True for a successful attempt; False for an unsuccessful attempt
     */
-  def isValidLoginAttempt(username: String, password: String): (Boolean, String) = {
+  def isValidLoginAttempt(username: String, password: String): (Boolean, String, User) = {
 
     db.withConnection { implicit c =>
-      val q = SQL(
+
+      val parser: RowParser[User] = Macro.namedParser[User]
+      val q: SimpleSql[Row] = SQL(
         """
-          |SELECT password
+          |SELECT *
           |FROM user
           |WHERE nickname = {username}
         """.stripMargin
       ).on("username" -> username)
 
       try {
-        val hashedPassword = q.as(SqlParser.scalar[String].single)
+        val result = q.as(parser.single)
 
-        if (BCrypt.checkpw(password, hashedPassword)) {
-          (true, "You are now logged in.")
+        if (BCrypt.checkpw(password, result.password)) {
+          (true, s"You are logged in as ${result.fullname}.", result)
         }
         else {
-          (false, "Access denied.")
+          (false, "Access denied.", null)
         }
       }
       catch {
-        case a: anorm.AnormException => (false, "Invalid username.")
-        case _: Throwable => (false, "Something bad happened. Try again?")
+        case a: anorm.AnormException => (false, "Invalid username.", null)
+        case _: Throwable => (false, "Something bad happened. Try again?", null)
       }
     }
   }

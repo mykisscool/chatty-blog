@@ -32,6 +32,10 @@ nav {
     background-color: #e3f2fd;
 }
 
+body.error nav {
+    background-color: #ffcc00;
+}
+
 section.article-body {
     max-width: 800px;
     margin: auto;
@@ -42,10 +46,6 @@ nav li + li {
 }
 
 @media only screen and (max-width: 767px) {
-    nav li {
-        margin: 15px 0;
-    }
-
     nav li + li {
         margin-left: 0;
     }
@@ -53,9 +53,12 @@ nav li + li {
 
 a.navbar-brand i {
     line-height: inherit;
-    color: #64737e;
     vertical-align: middle;
     font-size: 100%;
+}
+
+.navbar-light .navbar-brand {
+    color: rgba(0, 0, 0, 0.7);
 }
 
 div#main {

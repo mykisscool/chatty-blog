@@ -1,4 +1,4 @@
-@(title: String, page: Int, posts: Seq[Post], showPreviousLink: Boolean, showNextLink: Boolean)
+@(title: String, page: Int, posts: Seq[Post], showPreviousLink: Boolean, showNextLink: Boolean)(implicit request: Request[AnyContent])
 
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
 @link(post: Post) = {@Html(post.content + " &hellip; <a href=\"blog/" + post.slug + "\">Read More</a></p>")}

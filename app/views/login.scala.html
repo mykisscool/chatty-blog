@@ -6,13 +6,15 @@
 
         <form id="form-login" method="post" action="@postUrl" novalidate>
 
-            @request.flash.data.map { case (name, value) =>
+            @request.flash.data.map { case (alertType, message) =>
+                @if(alertType == "error") {
 
-            <div class="alert alert-danger alert-dismissible fade show mb-4">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                @value
-            </div>
+                    <div class="alert alert-danger alert-dismissible show mb-4">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        @message
+                    </div>
 
+                }
             }
 
             @helper.CSRF.formField
@@ -46,7 +48,7 @@
 
             <div class="form-row">
                 <div class="col d-flex flex-column align-items-center centered">
-                    <button type="submit" class="btn btn-outline-primary">Start</button>
+                    <button type="submit" class="btn btn-outline-primary">Start!</button>
                 </div>
             </div> <!-- // .form-row -->
 
