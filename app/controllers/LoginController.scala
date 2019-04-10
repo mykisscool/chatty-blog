@@ -8,12 +8,14 @@ import models.{LoginModel => Login}
   *
   * @param cc Simply meant to bundle together components typically used in a controller
   * @param loginModel Model class for authenticating users to application
+  * @param userAction Checks to make sure the request is performed by an authenticated user
   */
 @Singleton
-class LoginController @Inject()(cc: ControllerComponents, loginModel: Login) extends AbstractController(cc) {
+class LoginController @Inject()(cc: ControllerComponents, loginModel: Login, userAction: UserAction) extends AbstractController(cc) {
 
   private val homeRoute = routes.HomeController.index()
   private val loginRoute = routes.LoginController.loginForm()
+  private val formSubmitUrl = routes.LoginController.processLoginAttempt()
 
   /** Displays the login form
     *
@@ -21,10 +23,13 @@ class LoginController @Inject()(cc: ControllerComponents, loginModel: Login) ext
     */
   def loginForm = Action { implicit request: Request[AnyContent] =>
 
-    val title = "Login"
-    val formSubmitUrl = routes.LoginController.processLoginAttempt()
-
-    Ok(views.html.login(title, formSubmitUrl))
+    // No need to login if the user has an active session
+    if (request.session.get("userid").nonEmpty) {
+      Redirect(homeRoute)
+    }
+    else {
+      Ok(views.html.login("Login", formSubmitUrl))
+    }
   }
 
   /** Either you see the login form with some login errors OR you see the index page as an authenticated user
@@ -51,7 +56,7 @@ class LoginController @Inject()(cc: ControllerComponents, loginModel: Login) ext
     *
     * @return The index page with a cleared session
     */
-  def processLogoutAttempt = Action { implicit request: Request[AnyContent] =>
+  def processLogoutAttempt = userAction { implicit request: Request[AnyContent] =>
     Redirect(homeRoute).withNewSession.flashing("info" -> "You have logged out.")
   }
 }
