@@ -152,6 +152,41 @@ div.comment p span > span {
     padding: 0 1px;
 }
 
+div.comment span.reply {
+    color: rgba(222, 111, 161, 0.5);
+    padding-left: 3px;
+}
+
+div.comment span.reply a, div.comment span.reply span {
+    color: rgba(222, 111, 161, 0.6);
+}
+
+div.comment span.reply a:hover, div.comment span.reply a:hover span {
+    color: rgb(222, 111, 161);
+    text-decoration: none;
+}
+
+div.comment span.reply span.material-icons {
+    font-size: inherit;
+    line-height: inherit;
+    vertical-align: middle;
+}
+
 div.tooltip-inner {
     font-size: .75rem;
+}
+
+div#comments div.comment div.input-group-append {
+    padding-left: 0;
+    border-left: 0;
+}
+
+div#comments div.comment div.input-group-append button {
+    font-size: 0.95em;
+}
+
+textarea.reply-to {
+    border: 1px solid #ddd;
+    resize: none;
+    font-size: 0.90em;
 }

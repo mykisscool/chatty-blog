@@ -36,6 +36,42 @@ $(function () {
             }, false);
         }, false);
     }
+
+    // Toggle reply box
+    $('span.reply', 'div.comment').click(function (e) {
+        e.preventDefault();
+        $parent = $(this).parents('p');
+        $textareaInput = '' +
+            '<div class="input-group">' +
+                '<textarea class="form-control rounded-0 reply-to" rows="2" aria-label="Reply"></textarea>' +
+                '<div class="input-group-append">' +
+                    '<button class="btn btn-outline-primary" type="button">Reply</button>' +
+                '</div>' +
+            '</div>';
+
+        if ($parent.find('div.input-group').length) {
+            $parent.find('div.input-group').remove();
+        }
+        else {
+            $parent.append($textareaInput);
+        }
+    });
+
+    // Reply box response
+    $('div.comment').on('click', 'button', function (e) {
+        e.stopPropagation();
+        $parent = $(this).parents('div.input-group');
+
+        var replyData = $parent.prev('span.reply').data();
+        replyData.reply = $parent.find('textarea.reply-to').val();
+
+        // @TODO Validate reply, POST to controller method, update DOM, etc.
+        console.log(replyData)
+
+
+
+    });
+
 });
 
 /** Folds/unfolds children comments based on parent comment link location
