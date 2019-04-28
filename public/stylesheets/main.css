@@ -81,7 +81,6 @@ p.byline {
 
 p.byline span {
     color: #777;
-
 }
 
 p.byline span > span {
@@ -152,11 +151,6 @@ div.comment p span > span {
     padding: 0 1px;
 }
 
-div.comment span.reply {
-    color: rgba(222, 111, 161, 0.5);
-    padding-left: 3px;
-}
-
 div.comment span.reply a, div.comment span.reply span {
     color: rgba(222, 111, 161, 0.6);
 }
@@ -181,7 +175,7 @@ div#comments div.comment div.input-group-append {
     border-left: 0;
 }
 
-div#comments div.comment div.input-group-append button {
+div.comment div.input-group-append button {
     font-size: 0.95em;
 }
 
@@ -189,4 +183,8 @@ textarea.reply-to {
     border: 1px solid #ddd;
     resize: none;
     font-size: 0.90em;
+}
+
+div#comment-directly-to-post p {
+    margin-top: -1rem;
 }

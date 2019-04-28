@@ -1,7 +1,18 @@
 @(title: String, post: Post, comments: List[Comment])(implicit request: Request[AnyContent])
 
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
-@display(comment: Comment) = {
+@commentPartial(postid: Int, commentid: Int) = {
+    <span class="reply" data-postid="@postid" data-commentid="@commentid">
+        <a href="#">
+            <br />
+            <span class="material-icons">
+                chat_bubble
+            </span>
+            reply
+        </a>
+    </span>
+}
+@displayComments(comment: Comment) = {
     <p>
         <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">
             <i></i>
@@ -15,16 +26,7 @@
         @comment.comment
 
         @if(request.session.get("userid")) {
-
-        <span class="reply" data-postid="@post.id" data-commentid="@comment.comment_id">
-            <a href="#">
-                <span class="material-icons">
-                    chat_bubble
-                </span>
-                reply
-            </a>
-        </span>
-
+            @commentPartial(post.id, comment.comment_id)
         }
     </p>
 }
@@ -42,6 +44,19 @@
                 <p class="byline">By: @post.fullname <span><span>&middot;</span> @post.created_at</span></p>
 
                 @Html(post.content)
+
+                @if(request.session.get("userid")) {
+
+                    @helper.CSRF.formField
+
+                    <div id="comment-directly-to-post" class="comment">
+                        <p>
+                            @commentPartial(post.id, 0)
+                        </p>
+                    </div>
+
+                }
+
             </div>
         </article>
 
@@ -50,14 +65,12 @@
         <div id="comments" class="col-12">
             <hr />
 
-            @* @TODO Reply directly to article *@
-
             @for(comment <- comments) {
                 @if(comment.commented_on_comment_id.equals(0)) {
 
-                <div class="comment">
+                    <div class="comment">
 
-                    @display(comment)
+                    @displayComments(comment)
 
                     @* Recursively check for comments stemming from this parent comment *@
                     @{
@@ -71,7 +84,7 @@
                                 html += "<div class=\"comment\">"
 
                                 for(child <- children) {
-                                    html += display(child)
+                                    html += displayComments(child)
                                     html += showChildrenForParent(child.comment_id)
                                 }
 
@@ -84,7 +97,7 @@
                         showChildrenForParent(comment.comment_id)
                     }
 
-                </div>
+                    </div>
 
                 }
             }

@@ -11,43 +11,43 @@
 
     @for(post <- posts) {
 
-    <div class="col-12 col-md-6 p-3">
-        <div class="resized-image">
-            <a href="blog/@post.slug">
-                <img class="img-fluid" src="@src(post)" alt="@post.title" />
-            </a>
+        <div class="col-12 col-md-6 p-3">
+            <div class="resized-image">
+                <a href="blog/@post.slug">
+                    <img class="img-fluid" src="@src(post)" alt="@post.title" />
+                </a>
+            </div>
+            <p class="byline">By: @post.fullname
+                <span>
+                    <span>&middot;</span>
+                    @post.created_at
+                    <span>&middot;</span>
+                </span>
+                <a href="blog/@post.slug#comments">@post.comment_count comment@{if(post.comment_count > 1) "s" else ""}</a>
+            </p>
+            <h5>@post.title</h5>
+            @link(post)
         </div>
-        <p class="byline">By: @post.fullname
-            <span>
-                <span>&middot;</span>
-                @post.created_at
-                <span>&middot;</span>
-            </span>
-            <a href="blog/@post.slug#comments">@post.comment_count comment@{if(post.comment_count > 1) "s" else ""}</a>
-        </p>
-        <h5>@post.title</h5>
-        @link(post)
-    </div>
 
     }
 
     @if(showPreviousLink || showNextLink) {
 
-    <div class="col-12 pl-3" id="pagination">
+        <div class="col-12 pl-3" id="pagination">
 
-        @if(showPreviousLink) {
-            <a rel="prev" href="/?page=@{page - 1}">
-                <span>&lt;</span>Page @{page -1}
-            </a>
-        }
+            @if(showPreviousLink) {
+                <a rel="prev" href="/?page=@{page - 1}">
+                    <span>&lt;</span>Page @{page -1}
+                </a>
+            }
 
-        @if(showNextLink) {
-            <a rel="next" href="/?page=@{page + 1}">
-                Page @{page +1}<span>&gt;</span>
-            </a>
-        }
+            @if(showNextLink) {
+                <a rel="next" href="/?page=@{page + 1}">
+                    Page @{page +1}<span>&gt;</span>
+                </a>
+            }
 
-    </div>
+        </div>
 
     }
 }

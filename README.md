@@ -1,8 +1,10 @@
 # Chatty Blog
 
+Still chipping away ...
+
 [Demo Chatty Blog right now!](https://chatty-blog.herokuapp.com/)
 
-More coming soon ...
+I intentionally set a max age on a user session to 20 minutes.  That should be ample time to get a feel for this blog's features & reactivity.
 
 #### Logins
 

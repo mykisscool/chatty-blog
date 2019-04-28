@@ -65,14 +65,14 @@
             @request.flash.data.map { case (alertType, message) =>
                 @if(alertType == "info") {
 
-                <div class="row">
-                    <div class="col d-flex flex-column align-items-end">
-                        <div class="alert alert-info alert-dismissible show mb-4">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            @message
+                    <div class="row">
+                        <div class="col d-flex flex-column align-items-end">
+                            <div class="alert alert-info alert-dismissible show mb-4">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                @message
+                            </div>
                         </div>
                     </div>
-                </div>
 
                 }
             }
@@ -87,5 +87,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js?ver=1.14.3"></script>
         <script src="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js?ver=4.2.1"></script>
         <script src="@routes.Assets.versioned("javascripts/app.js")"></script>
+        <script src="@routes.JavascriptRouter.jsRoutes"></script>
     </body>
 </html>

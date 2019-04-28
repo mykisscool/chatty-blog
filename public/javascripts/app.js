@@ -62,16 +62,26 @@ $(function () {
         e.stopPropagation();
         $parent = $(this).parents('div.input-group');
 
-        var replyData = $parent.prev('span.reply').data();
-        replyData.reply = $parent.find('textarea.reply-to').val();
+        var replyData = $parent.prev('span.reply').data(),
+            postid = replyData.postid,
+            commentid = replyData.commentid,
+            comment = $parent.find('textarea.reply-to').val(),
+            csrfToken = $(':hidden[name=csrfToken]', 'section.article-body article').val();
 
-        // @TODO Validate reply, POST to controller method, update DOM, etc.
-        console.log(replyData)
+        if (comment.trim().length) {
+            var route = jsRoutes.controllers.BlogPostController.addComment(postid, commentid, comment);
 
-
-
+            // @TODO update DOM, etc.
+            $.ajax({
+                method: 'post',
+                url: route.url,
+                contentType : 'application/json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Csrf-Token', csrfToken);
+                }
+            });
+        }
     });
-
 });
 
 /** Folds/unfolds children comments based on parent comment link location
