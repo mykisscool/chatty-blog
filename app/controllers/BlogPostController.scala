@@ -40,9 +40,16 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     * @return JSON indicating either a successful or an unsuccessful reply
     */
   def addComment(postid: Int, commentid: Int, comment: String) = userAction { implicit request: Request[AnyContent] =>
-    val userid = request.session.get("userid")
 
-    // @TODO Add record to database, check for bad words, send appropriate response back to FE
+    // @TODO Validate Ajax only (fringe case; potentially unnecessary)
+    if (!request.headers.get("X-Requested-With").contains("XMLHttpRequest")){}
+
+    val userid = request.session.get("userid").get.toInt
+
+    // @TODO Uncomment when ready for PROD
+    // val newcommentid = blogPostCommentModel.addComment(postid, userid, commentid, comment)
+
+    // @TODO Send appropriate response back to FE
     Ok(Json.obj("status" -> "OK", "message" -> "OK"))
   }
 }

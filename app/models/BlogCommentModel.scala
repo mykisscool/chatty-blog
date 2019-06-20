@@ -1,10 +1,12 @@
 package models
 
+import scala.io.Source
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
 import play.api.db._
 import play.api.Configuration
+import play.api.Environment
 import anorm.{RowParser, SQL, ~}
 import anorm.SqlParser.{date, int, str}
 
@@ -28,9 +30,10 @@ case class Comment(comment_id: Int,
   *
   * @param dbapi Database interface
   * @param configuration application.conf configuration
+  * @param env Captures concerns relating to the classloader and the filesystem for the application
   */
 @Singleton
-class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
+class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env: Environment) {
 
   private val db = dbapi.database("default")
 
@@ -84,6 +87,17 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     }
   }
 
+  /** Replaces potential bad words in a comment with asterisks
+    * Source of bad words: https://github.com/RobertJGabriel/Google-profanity-words
+    *
+    * @param comment The comment made to the blog post/comment
+    * @return The same comment with bad words scrubbed out and supplemented with asterisks
+    */
+  private def removeBadWords(comment: String): String = {
+    val badWordsFile = env.getClass.getResource("/resources/badwords.txt").getPath
+    Source.fromFile(badWordsFile).getLines.mkString("\\b(", "|", ")\\b").r.replaceAllIn(comment, "****")
+  }
+
   /** Returns comments made to a blog post
     *
     * @param id Blog post ID
@@ -110,5 +124,30 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration) {
 
       q.as(parser.*)
     }
+  }
+
+  /** Adds a comment to the database
+    *
+    * @param postid The ID of the blog post
+    * @param userid The ID of the user who commented on the blog post
+    * @param commentid The ID of the comment (if a comment was made to another comment as opposed to directly commenting on the post)
+    * @param comment The comment made to the blog post/comment
+    * @return The new, unique ID of the comment
+    */
+  def addComment(postid: Int, userid: Int, commentid: Int, comment: String): Option[Long] = {
+
+    val id: Option[Long] = db.withConnection { implicit c =>
+
+      val q = SQL(
+        """
+          |INSERT INTO comment (post_id, user_id, comment_id, comment)
+          |values ({postid}, {userid}, {commentid}, {comment})
+        """.stripMargin
+      ).on("postid" -> postid, "userid" -> userid, "commentid" -> commentid, "comment" -> removeBadWords(comment))
+
+      q.executeInsert()
+    }
+
+    id
   }
 }
