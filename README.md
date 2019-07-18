@@ -2,9 +2,11 @@
 
 Still chipping away ...
 
-[Demo Chatty Blog right now!](https://chatty-blog.herokuapp.com/)
+[DEMO -- Start chatting right now!](https://chatty-blog.herokuapp.com/)
 
 I intentionally set a max age on a user session to 20 minutes.  That should be ample time to get a feel for this blog's features & reactivity.
+
+Also, the Akka ActorSystem periodically purges user comments on the off chance this project is discovered and gets hammered with comments. Please keep it clean. For the children.
 
 #### Logins
 

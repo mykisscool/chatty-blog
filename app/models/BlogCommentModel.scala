@@ -95,7 +95,16 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
     */
   private def removeBadWords(comment: String): String = {
     val badWordsFile = env.getClass.getResource("/resources/badwords.txt").getPath
-    Source.fromFile(badWordsFile).getLines.mkString("\\b(", "|", ")\\b").r.replaceAllIn(comment, "****")
+    val bufferedBadWords = Source.fromFile(badWordsFile)
+    val badWords = bufferedBadWords.getLines.toList
+    bufferedBadWords.close
+
+    var newComment = comment
+    for(badWord <- badWords) {
+      newComment = badWord.r.replaceAllIn(newComment, "*" * badWord.length)
+    }
+
+    newComment
   }
 
   /** Returns comments made to a blog post
@@ -149,5 +158,14 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
     }
 
     id
+  }
+
+  /** The Akka ActorSystem scheduler will periodically clean up user comments
+    */
+  def purgeUserComments(): Unit = {
+
+    db.withConnection { implicit c =>
+      SQL("DELETE FROM comment WHERE id > 17").execute()
+    }
   }
 }
