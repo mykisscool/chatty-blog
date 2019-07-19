@@ -125,6 +125,11 @@ div#comments div {
     border-left: 1px dashed rgba(255, 99, 71, 0.6);
 }
 
+div#comments div.loading-icon {
+    padding-left: 0;
+    border-left: none;
+}
+
 div.comment p {
     font-size: 90%;
     line-height: 1.6;
