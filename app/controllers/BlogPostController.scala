@@ -3,6 +3,7 @@ package controllers
 import java.net.URI
 import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.Configuration
 import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request, RequestHeader, WebSocket}
 import play.api.libs.json._
 import akka.stream.scaladsl.{BroadcastHub, Flow, Keep, MergeHub, Source}
@@ -19,8 +20,13 @@ import models.{BlogCommentModel => Comment, BlogPostModel => Post}
   * @param ec Thread pool
   */
 @Singleton
-class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post, blogPostCommentModel: Comment, userAction: UserAction)
-                                   (implicit materializer: Materializer, ec: ExecutionContext) extends AbstractController(cc) {
+class BlogPostController @Inject()(cc: ControllerComponents,
+                                   blogPostModel: Post,
+                                   blogPostCommentModel: Comment,
+                                   userAction: UserAction,
+                                   configuration: Configuration)
+                                   (implicit materializer: Materializer,
+                                             ec: ExecutionContext) extends AbstractController(cc) {
 
   private type webSocketMessage = String
 
@@ -109,7 +115,7 @@ class BlogPostController @Inject()(cc: ControllerComponents, blogPostModel: Post
     val blogPost = blogPostModel.getPost(slug)
     val title = blogPost.title
     val comments = blogPostCommentModel.getCommentsToPost(blogPost.id)
-    val webSocketUrl = routes.BlogPostController.chat().webSocketURL()
+    val webSocketUrl = routes.BlogPostController.chat().webSocketURL(configuration.get[Boolean]("my.secureWebSocket"))
 
     Ok(views.html.post(title, blogPost, comments, webSocketUrl))
   }
