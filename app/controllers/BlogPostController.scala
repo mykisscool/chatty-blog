@@ -62,15 +62,18 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     * @return True of false if the WbSocket comes from the same origin
     */
   private def sameOriginCheck(implicit rh: RequestHeader): Boolean = {
-    logger.debug(s"Origin: ${rh.headers.get("Origin")}")
-    rh.headers.get("Origin") match {
+
+    val origin = rh.headers.get("Origin")
+    logger.debug(s"Origin: $origin")
+
+    origin match {
 
       case Some(originValue) if originMatches(originValue) =>
         logger.debug(s"originCheck: originValue = $originValue")
         true
 
       case Some(badOrigin) =>
-        logger.error(s"originCheck: Rejecting request because Origin header value ${badOrigin} is not in the same origin")
+        logger.error(s"originCheck: Rejecting request because Origin header value $badOrigin is not in the same origin")
         false
 
       case None =>
@@ -88,7 +91,6 @@ class BlogPostController @Inject()(cc: ControllerComponents,
   private def originMatches(origin: String): Boolean = {
     try {
       val url = new URI(origin)
-
       logger.debug(s"Host: ${url.getHost}")
 
       // When hosted on Heroku- the port changes. Checking the host should suffice.
@@ -117,12 +119,13 @@ class BlogPostController @Inject()(cc: ControllerComponents,
           flow => Right(flow)
         }.recover {
           case e: Exception =>
-            logger.error("Cannot create WebSocket.", e)
-            Left(InternalServerError("Cannot create WebSocket."))
+            val errorMessage = "Cannot create WebSocket"
+            logger.error(errorMessage, e)
+            Left(InternalServerError(errorMessage))
         }
 
       case rejected =>
-        logger.error(s"Request ${rejected} failed same origin check")
+        logger.error(s"Request $rejected failed same origin check")
         Future.successful {
           Left(Forbidden("Forbidden."))
         }
