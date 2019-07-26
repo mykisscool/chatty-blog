@@ -4,16 +4,6 @@ _Chatty Blog_ is a simple and interactive blogging application that provides imm
 
 [**DEMO** -- Start chatting right now!](https://chatty-blog.herokuapp.com/)
 
-## Screenshots
-
-> *Posts page*
-
-![Screenshot 1](/public/images/screenshots/screenshot-1.png?raw=true "Posts page")
-
-> *Post page with notifications*
-
-![Screenshot 2](/public/images/screenshots/screenshot-2.png?raw=true "Post page with notifications")
-
 ## Logins
 
 | Name           | Username         | Password    |
@@ -26,6 +16,16 @@ _Chatty Blog_ is a simple and interactive blogging application that provides imm
 | Princess Zelda | so_sleepy        | password987 |
 | Donkey Kong    | banana_slamma    | password012 |
 | Mario Mario    | its_a_me         | password210 |
+
+## Screenshots
+
+> *Posts page*
+
+![Screenshot 1](/public/images/screenshots/screenshot-1.png?raw=true "Posts page")
+
+> *Post page with notifications*
+
+![Screenshot 2](/public/images/screenshots/screenshot-2.png?raw=true "Post page with notifications")
 
 ## Notes
 
