@@ -11,6 +11,7 @@ GET     /                           controllers.HomeController.index(page: Int ?
 # Blog posts
 GET     /blog/:slug                 controllers.BlogPostController.getPost(slug: String)
 POST    /comment                    controllers.BlogPostController.addComment(postid: Int, commentid: Int, comment: String)
+GET     /chat                       controllers.BlogPostController.chat
 
 # Authentication
 GET     /login                      controllers.LoginController.loginForm

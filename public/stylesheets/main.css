@@ -193,3 +193,30 @@ textarea.reply-to {
 div#comment-directly-to-post p {
     margin-top: -1rem;
 }
+
+div#notification-area {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+div.toast {
+    min-width: 350px;
+}
+
+div.toast-body em {
+    color :#000;
+}
+
+.active-page-anchor {
+    background-color: #fada5e;
+    border-radius: 3px;
+    transition: all 1s ease;
+}
+
+.inactive-page-anchor {
+    background-color: #fff;
+    border-radius: 0;
+    transition: all 1s ease;
+}

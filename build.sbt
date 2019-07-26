@@ -19,7 +19,8 @@ libraryDependencies ++= Seq(
   evolutions ,
   "mysql" % "mysql-connector-java" % "5.1.29" ,
   "org.mindrot" % "jbcrypt" % "0.3m" ,
-  "org.playframework.anorm" %% "anorm" % "2.6.2"
+  "org.playframework.anorm" %% "anorm" % "2.6.2" ,
+  "org.jsoup" % "jsoup" % "1.12.1"
 )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )

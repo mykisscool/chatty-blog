@@ -1,4 +1,4 @@
-@(title: String, post: Post, comments: List[Comment])(implicit request: Request[AnyContent])
+@(title: String, post: Post, comments: List[Comment], webSocketUrl: String)(implicit request: Request[AnyContent])
 
 @src(post: Post) = {@routes.Assets.versioned("images/posts/" + {post.slug} + "/" + {post.image})}
 @commentPartial(postid: Int, commentid: Int) = {
@@ -13,7 +13,7 @@
     </span>
 }
 @displayComments(comment: Comment) = {
-    <p>
+    <p id="comment-anchor-@comment.comment_id">
         <a href="#" data-placement="top" data-toggle="tooltip" title="@comment.fullname">
             <i></i>
             @comment.nickname
@@ -31,7 +31,7 @@
     </p>
 }
 
-@main("Chatty Blog - " + title) {
+@main("Chatty Blog - " + title, webSocketUrl) {
 
     <section class="article-body">
 

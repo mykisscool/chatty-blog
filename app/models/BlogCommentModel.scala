@@ -9,6 +9,8 @@ import play.api.Configuration
 import play.api.Environment
 import anorm.{RowParser, SQL, ~}
 import anorm.SqlParser.{date, int, str}
+import org.jsoup.Jsoup
+import org.jsoup.safety.Whitelist
 
 /** Case class for a blog post comment
   *
@@ -87,13 +89,13 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
     }
   }
 
-  /** Replaces potential bad words in a comment with asterisks
+  /** Replaces potential bad words in a comment with asterisks and provides sanitization
     * Source of bad words: https://github.com/RobertJGabriel/Google-profanity-words
     *
     * @param comment The comment made to the blog post/comment
-    * @return The same comment with bad words scrubbed out and supplemented with asterisks
+    * @return The same comment with bad words scrubbed out, supplemented with asterisks, and sanitized
     */
-  private def removeBadWords(comment: String): String = {
+  private def cleanComment(comment: String): String = {
     val badWordsFile = env.getClass.getResource("/resources/badwords.txt").getPath
     val bufferedBadWords = Source.fromFile(badWordsFile)
     val badWords = bufferedBadWords.getLines.toList
@@ -104,7 +106,7 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
       newComment = badWord.r.replaceAllIn(newComment, "*" * badWord.length)
     }
 
-    newComment
+    Jsoup.clean(newComment, Whitelist.basic())
   }
 
   /** Returns comments made to a blog post
@@ -141,10 +143,11 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
     * @param userid The ID of the user who commented on the blog post
     * @param commentid The ID of the comment (if a comment was made to another comment as opposed to directly commenting on the post)
     * @param comment The comment made to the blog post/comment
-    * @return The new, unique ID of the comment
+    * @return A tuple containing the sanitized comment as well as the new, unique ID of the comment
     */
-  def addComment(postid: Int, userid: Int, commentid: Int, comment: String): Option[Long] = {
+  def addComment(postid: Int, userid: Int, commentid: Int, comment: String): (String, Option[Long]) = {
 
+    val sanitizedComment = cleanComment(comment)
     val id: Option[Long] = db.withConnection { implicit c =>
 
       val q = SQL(
@@ -152,12 +155,12 @@ class BlogCommentModel @Inject()(dbapi: DBApi, configuration: Configuration, env
           |INSERT INTO comment (post_id, user_id, comment_id, comment)
           |values ({postid}, {userid}, {commentid}, {comment})
         """.stripMargin
-      ).on("postid" -> postid, "userid" -> userid, "commentid" -> commentid, "comment" -> removeBadWords(comment))
+      ).on("postid" -> postid, "userid" -> userid, "commentid" -> commentid, "comment" -> sanitizedComment)
 
       q.executeInsert()
     }
 
-    id
+    (sanitizedComment, id)
   }
 
   /** The Akka ActorSystem scheduler will periodically clean up user comments

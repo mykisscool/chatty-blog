@@ -81,8 +81,8 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
     str("content") ~
     date("created_at") map {
 
-    case  id ~ comment_count ~ fullname ~ nickname ~ title ~ slug ~ image ~ content ~ created_at =>
-      Post(id, comment_count, fullname, nickname, title, slug, image, if (isPost) content else truncateContent(content), prettyDate(created_at))
+      case id ~ comment_count ~ fullname ~ nickname ~ title ~ slug ~ image ~ content ~ created_at =>
+        Post(id, comment_count, fullname, nickname, title, slug, image, if (isPost) content else truncateContent(content), prettyDate(created_at))
     }
   }
 
@@ -113,7 +113,7 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
           |ORDER BY created_at DESC, p.id DESC
           |LIMIT {start}, {end}
         """.stripMargin
-      ).on("start" -> (page -1) * postsPerPage, "end" -> postsPerPage)
+      ).on("start" -> (page - 1) * postsPerPage, "end" -> postsPerPage)
 
       q.as(parser().*)
     }
@@ -146,6 +146,24 @@ class BlogPostModel @Inject()(dbapi: DBApi, configuration: Configuration) {
       ).on("slug" -> slug)
 
       q.as(parser(true).single)
+    }
+  }
+
+  /** Returns a blog post's title and slug
+    *
+    * @param postid The ID of the blog post
+    * @return The title of the blog post as well asd the slug URI parameter
+    */
+  def getPostDetails(postid: Int): (String, String) = {
+
+    val simpleParser =
+      str("title") ~
+      str("slug") map {
+        case title ~ slug => (title, slug)
+      }
+
+    db.withConnection { implicit c =>
+      SQL("SELECT title, slug FROM post WHERE id = {postid}").on("postid" -> postid).as(simpleParser.single)
     }
   }
 }

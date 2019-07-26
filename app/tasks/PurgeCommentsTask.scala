@@ -3,6 +3,7 @@ package tasks
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import akka.actor.ActorSystem
+import play.api.Logger
 import javax.inject.{Inject, Singleton}
 import models.{BlogCommentModel => Comment}
 
@@ -17,8 +18,10 @@ import models.{BlogCommentModel => Comment}
 class PurgeCommentsTask @Inject()(actorSystem: ActorSystem,
                                   blogPostCommentModel: Comment)(implicit ec: ExecutionContext) {
 
+  private val logger: Logger = Logger(getClass)
+
   actorSystem.scheduler.schedule(initialDelay = 0.microseconds, interval = 8.hours) {
     blogPostCommentModel.purgeUserComments()
-    println("Comments cleaned up.")
+    logger.info("Comments cleaned up.")
   }
 }
