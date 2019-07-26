@@ -23,6 +23,8 @@ _Chatty Blog_ is a simple and interactive blogging application that provides imm
 
 ![Screenshot 1](/public/images/screenshots/screenshot-1.png?raw=true "Posts page")
 
+---
+
 > *Post page with notifications*
 
 ![Screenshot 2](/public/images/screenshots/screenshot-2.png?raw=true "Post page with notifications")

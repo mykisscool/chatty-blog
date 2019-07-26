@@ -62,11 +62,7 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     * @return True of false if the WbSocket comes from the same origin
     */
   private def sameOriginCheck(implicit rh: RequestHeader): Boolean = {
-
-    val origin = rh.headers.get("Origin")
-    logger.debug(s"Origin: $origin")
-
-    origin match {
+    rh.headers.get("Origin") match {
 
       case Some(originValue) if originMatches(originValue) =>
         logger.debug(s"originCheck: originValue = $originValue")
@@ -93,17 +89,14 @@ class BlogPostController @Inject()(cc: ControllerComponents,
       val url = new URI(origin)
       logger.debug(s"Host: ${url.getHost}")
 
-      // When hosted on Heroku- the port changes. Checking the host should suffice.
       if (url.getHost == "chatty-blog.herokuapp.com") true
-
-      (url.getHost == "localhost") &&
-        (url.getPort match {
-          case 9000 => true
-          case _ => false
-        })
+      else if ((url.getHost == "localhost") && (url.getPort == 9000)) true
+      else false
     }
     catch {
-      case e: Exception => false
+      case e: Exception =>
+        logger.error("Origin URI parsing error", e)
+        false
     }
   }
 
