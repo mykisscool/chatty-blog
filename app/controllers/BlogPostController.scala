@@ -62,6 +62,7 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     * @return True of false if the WbSocket comes from the same origin
     */
   private def sameOriginCheck(implicit rh: RequestHeader): Boolean = {
+    logger.debug(s"Origin: ${rh.headers.get("Origin")}")
     rh.headers.get("Origin") match {
 
       case Some(originValue) if originMatches(originValue) =>
@@ -69,11 +70,11 @@ class BlogPostController @Inject()(cc: ControllerComponents,
         true
 
       case Some(badOrigin) =>
-        logger.error(s"originCheck: rejecting request because Origin header value ${badOrigin} is not in the same origin")
+        logger.error(s"originCheck: Rejecting request because Origin header value ${badOrigin} is not in the same origin")
         false
 
       case None =>
-        logger.error("originCheck: rejecting request because no Origin header found")
+        logger.error("originCheck: Rejecting request because no Origin header found")
         false
     }
   }
