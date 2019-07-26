@@ -76,7 +76,7 @@ class BlogPostController @Inject()(cc: ControllerComponents,
   private def originMatches(origin: String): Boolean = {
     try {
       val url = new URI(origin)
-      url.getHost == "localhost" &&
+      (url.getHost == "localhost" || url.getHost == "chatty-blog.herokuapp.com") &&
         (url.getPort match { case 9000 | 19001 => true; case _ => false })
     }
     catch {
