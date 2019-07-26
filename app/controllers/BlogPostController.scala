@@ -3,7 +3,7 @@ package controllers
 import java.net.URI
 import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.Configuration
+import play.api.{Configuration, Logger}
 import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request, RequestHeader, WebSocket}
 import play.api.libs.json._
 import akka.stream.scaladsl.{BroadcastHub, Flow, Keep, MergeHub, Source}
@@ -27,6 +27,8 @@ class BlogPostController @Inject()(cc: ControllerComponents,
                                    configuration: Configuration)
                                    (implicit materializer: Materializer,
                                              ec: ExecutionContext) extends AbstractController(cc) {
+
+  private val logger: Logger = Logger(getClass)
 
   private type webSocketMessage = String
 
@@ -61,9 +63,18 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     */
   private def sameOriginCheck(implicit rh: RequestHeader): Boolean = {
     rh.headers.get("Origin") match {
-      case Some(originValue) if originMatches(originValue) => true
-      case Some(badOrigin) => false
-      case None => false
+
+      case Some(originValue) if originMatches(originValue) =>
+        logger.debug(s"originCheck: originValue = $originValue")
+        true
+
+      case Some(badOrigin) =>
+        logger.error(s"originCheck: rejecting request because Origin header value ${badOrigin} is not in the same origin")
+        false
+
+      case None =>
+        logger.error("originCheck: rejecting request because no Origin header found")
+        false
     }
   }
 
@@ -77,12 +88,14 @@ class BlogPostController @Inject()(cc: ControllerComponents,
     try {
       val url = new URI(origin)
 
+      logger.debug(s"Host: ${url.getHost}")
+
       // When hosted on Heroku- the port changes. Checking the host should suffice.
       if (url.getHost == "chatty-blog.herokuapp.com") true
 
       (url.getHost == "localhost") &&
         (url.getPort match {
-          case 9000 | 19001 => true
+          case 9000 => true
           case _ => false
         })
     }
@@ -102,10 +115,13 @@ class BlogPostController @Inject()(cc: ControllerComponents,
         Future.successful(userFlow).map {
           flow => Right(flow)
         }.recover {
-          case e: Exception => Left(InternalServerError("Cannot create WebSocket."))
+          case e: Exception =>
+            logger.error("Cannot create WebSocket.", e)
+            Left(InternalServerError("Cannot create WebSocket."))
         }
 
       case rejected =>
+        logger.error(s"Request ${rejected} failed same origin check")
         Future.successful {
           Left(Forbidden("Forbidden."))
         }
