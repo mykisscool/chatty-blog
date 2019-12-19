@@ -2,7 +2,7 @@
 
 _Chatty Blog_ is a simple and interactive blogging application that provides immediate feedback on comments made to posts & other comments in an organized & non-disruptive manner using Akka Streams and WebSockets on the Play Framework.
 
-[**DEMO** -- Start chatting right now!](https://chatty-blog.herokuapp.com/)
+[**DEMO** -- Start chatting right now! (be patient while it wakes up ...)](https://chatty-blog.herokuapp.com/)
 
 ## Logins
 
